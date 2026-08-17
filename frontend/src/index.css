@@ -1,0 +1,169 @@
+/* ==========================================================================
+   Design Tokens & CSS Variables
+   Panduan UI/UX 100% MockUp Exact Visual Implementation
+   ========================================================================== */
+
+:root {
+  /* Color Tokens from UI/UX PDF & Mockup */
+  --color-bg: #EFE7D8;           /* Latar utama (pasir hangat) */
+  --color-bg-alt: #E4D9C4;       /* Latar kartu/section */
+  --color-surface: #FFFFFF;      /* Kartu di atas bg-alt, form input */
+  --color-ink: #2A211A;          /* Teks utama (coklat gelap hangat) */
+  --color-ink-soft: #5C4F41;     /* Teks sekunder/caption */
+  --color-primary: #A8481F;      /* CTA utama (Rust/karat) */
+  --color-primary-dark: #7A3216; /* Hover/pressed state */
+  --color-secondary: #56683A;    /* Elemen sekunder (Hijau lumut) */
+  --color-accent-gold: #C89238;  /* Harga & value highlight */
+  --color-grade-a: #4C7A3D;      /* Badge Grade A */
+  --color-grade-b: #C89238;      /* Badge Grade B */
+  --color-grade-c: #A13324;      /* Badge Grade C / Ditolak */
+  --color-info: #3D5A6C;         /* Status Lolos dengan Peringatan */
+  --color-border: #D8CBB0;       /* Garis pembatas halus */
+
+  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius-card: 16px;
+  --radius-button: 12px;
+  --radius-pill: 9999px;
+  --touch-target-min: 48px;
+}
+
+/* Global Reset & Box Sizing */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #1a1714;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* App Outer Container & Phone Mockup Frame */
+.app-viewport-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #181512;
+  padding: 20px 0;
+}
+
+.app-frame {
+  width: 100%;
+  max-width: 410px;
+  min-height: 840px;
+  height: 100%;
+  background-color: var(--color-bg);
+  border-radius: 36px;
+  border: 12px solid #000000;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.desktop-wide-view {
+  max-width: 860px !important;
+  border-radius: 20px !important;
+  border: 4px solid #332d27 !important;
+}
+
+/* Typography Utility Classes */
+.font-display { font-family: var(--font-display); }
+.font-body { font-family: var(--font-body); }
+.font-mono { font-family: var(--font-mono); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-ink);
+  line-height: 1.25;
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--touch-target-min);
+  padding: 12px 20px;
+  border-radius: var(--radius-button);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  width: 100%;
+  user-select: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover, .btn-primary:active {
+  background-color: var(--color-primary-dark);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+/* Data Source Badges (Requirement 3.4) */
+.badge-data-asli {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(76, 122, 61, 0.12);
+  color: var(--color-grade-a);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-data-simulasi {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(92, 79, 65, 0.12);
+  color: var(--color-ink-soft);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
