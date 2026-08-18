@@ -328,7 +328,7 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
           />
           <button
             type="button"
-            onClick={() => onCapture(scenario)}
+            onClick={() => onCapture(scenario, previewImage)}
             style={{
               width: '66px',
               height: '66px',

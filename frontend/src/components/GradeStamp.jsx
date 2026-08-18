@@ -5,7 +5,7 @@ import React from 'react';
  * Lingkaran stempel warna grade dengan teks besar letter (mis. 'A') dan 'GRADE A' di dalamnya.
  * Di bawahnya terdapat 'Keyakinan sistem: 92%' (font mono).
  */
-export default function GradeStamp({ grade = 'A', confidenceScore = 92, status = 'GRADED' }) {
+export default function GradeStamp({ grade = 'A', confidenceScore = 92, status = 'GRADED', capturedPhoto = null }) {
   let borderColor = '#4C7A3D'; // Grade A Green
   let gradeLetter = grade;
   let gradeSubText = `GRADE ${grade}`;
@@ -22,6 +22,31 @@ export default function GradeStamp({ grade = 'A', confidenceScore = 92, status =
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px', margin: '8px 0 16px' }}>
+      {/* Captured Photo Display */}
+      {capturedPhoto && (
+        <div
+          style={{
+            width: '100%',
+            maxWidth: '280px',
+            height: '180px',
+            borderRadius: '16px',
+            overflow: 'hidden',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(216, 203, 176, 0.5)'
+          }}
+        >
+          <img
+            src={capturedPhoto}
+            alt="Captured material"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
+      )}
+
       {/* Circle Official Stamp Badge (Exact Mockup Match) */}
       <div 
         style={{

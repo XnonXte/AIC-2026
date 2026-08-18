@@ -25,6 +25,7 @@ export default function App() {
   const [resultData, setResultData] = useState(MOCK_GRADING_RESULTS.GRADED_A);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [historyList, setHistoryList] = useState(INITIAL_HISTORY);
+  const [capturedPhoto, setCapturedPhoto] = useState(null);
 
   // Handle window resize for responsive design
   useEffect(() => {
@@ -36,9 +37,10 @@ export default function App() {
   }, []);
 
   // Trigger Capture & Start 3-Stage Progress
-  const handleCapture = (targetScenario = scenario) => {
+  const handleCapture = (targetScenario = scenario, photo = null) => {
     const data = MOCK_GRADING_RESULTS[targetScenario] || MOCK_GRADING_RESULTS.GRADED_A;
     setResultData(data);
+    setCapturedPhoto(photo);
     setCurrentView('LOADING');
   };
 
@@ -94,6 +96,7 @@ export default function App() {
           <DesktopResultsPanel
             resultData={resultData}
             selectedMaterial={selectedMaterial}
+            capturedPhoto={capturedPhoto}
             onRetake={() => setCurrentView('CAMERA')}
             onProceed={() => {
               if (resultData.statusCode !== 'GRADED') {
@@ -163,10 +166,11 @@ export default function App() {
               {/* Standard Graded Result Layout */}
               {resultData.statusCode === 'GRADED' && (
                 <>
-                  <GradeStamp
+                   <GradeStamp
                     grade={resultData.grade}
                     confidenceScore={resultData.confidenceScore}
                     status={resultData.statusCode}
+                    capturedPhoto={capturedPhoto}
                   />
 
                   <div

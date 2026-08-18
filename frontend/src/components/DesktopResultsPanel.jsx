@@ -8,6 +8,7 @@ import { TrendingUp, Award, AlertCircle, CheckCircle, XCircle, Copy, Download, P
 export default function DesktopResultsPanel({
   resultData,
   selectedMaterial,
+  capturedPhoto,
   onRetake,
   onProceed
 }) {
@@ -83,6 +84,29 @@ export default function DesktopResultsPanel({
           flexDirection: 'column',
           gap: '16px'
         }}>
+          {/* Captured Photo */}
+          {capturedPhoto && (
+            <div style={{
+              backgroundColor: '#FFFFFF',
+              borderRadius: '24px',
+              overflow: 'hidden',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+              border: '1px solid rgba(216, 203, 176, 0.5)',
+              aspectRatio: '4 / 3',
+              maxHeight: '300px'
+            }}>
+              <img
+                src={capturedPhoto}
+                alt="Captured material"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
+          )}
+
           {/* Grade Circle Badge - Dipanjangkan */}
           <div style={{
             backgroundColor: '#FFFFFF',
