@@ -59,6 +59,19 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
     }
   };
 
+  // Capture from video stream
+  const captureFromCamera = () => {
+    if (videoRef.current && isCameraActive) {
+      const canvas = document.createElement('canvas');
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(videoRef.current, 0, 0);
+      return canvas.toDataURL('image/jpeg');
+    }
+    return previewImage; // Return preview if available
+  };
+
   return (
     <div
       style={{
@@ -328,7 +341,7 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
           />
           <button
             type="button"
-            onClick={() => onCapture(scenario, previewImage)}
+            onClick={() => onCapture(scenario, captureFromCamera())}
             style={{
               width: '66px',
               height: '66px',
