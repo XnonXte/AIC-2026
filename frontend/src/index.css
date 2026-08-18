@@ -63,7 +63,6 @@ body {
 
 .app-frame {
   width: 100%;
-  max-width: 480px;
   height: 100vh;
   height: 100dvh;
   max-height: 100dvh;
