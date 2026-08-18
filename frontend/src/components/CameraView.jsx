@@ -76,18 +76,18 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
       {/* Top Header Bar */}
       <div
         style={{
-          padding: 'var(--padding-sm) var(--padding-md) calc(var(--padding-sm) - 4px)',
+          padding: '16px 16px 12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--gap-xs)', justifyContent: 'center', width: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center', width: '100%' }}>
 
           <span
             style={{
-              fontSize: 'var(--font-size-lg)',
+              fontSize: '15px',
               fontWeight: 700,
               fontFamily: 'var(--font-display)',
               letterSpacing: '0.3px',
@@ -105,10 +105,10 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
       {/* Material Filter Chips (PET, Kardus, Kaleng) */}
       <div
         style={{
-          padding: 'var(--padding-sm)',
+          padding: '12px 16px',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(clamp(80px, 20vw, 120px), 1fr))',
-          gap: 'var(--gap-sm)'
+          gridTemplateColumns: '1fr 1fr 1fr',
+          gap: '8px'
         }}
       >
         {MATERIALS.map((item) => {
@@ -123,13 +123,13 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: 'var(--gap-xs)',
-                padding: 'var(--padding-xs)',
+                gap: '4px',
+                padding: '12px 6px',
                 borderRadius: '14px',
-                fontSize: 'var(--font-size-sm)',
+                fontSize: '12px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                minHeight: 'var(--button-height-sm)',
+                minHeight: '44px',
                 border: isActive ? '1.5px solid #FFFFFF' : '1px solid rgba(255, 255, 255, 0.15)',
                 backgroundColor: isActive ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.05)',
                 color: '#FFFFFF',
@@ -140,13 +140,13 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
               }}
             >
               {item.id === 'pet' ? (
-                <FlaskConical size={clamp(18, '4vw', 24)} color="#FFFFFF" />
+                <FlaskConical size={20} color="#FFFFFF" />
               ) : item.id === 'kardus' ? (
-                <Package size={clamp(18, '4vw', 24)} color="#FFFFFF" />
+                <Package size={20} color="#FFFFFF" />
               ) : (
-                <Container size={clamp(18, '4vw', 24)} color="#FFFFFF" />
+                <Container size={20} color="#FFFFFF" />
               )}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--gap-xs)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                 <span>{item.name}</span>
                 {isActive && <Check size={11} color="var(--color-accent-gold)" strokeWidth={3} />}
               </div>
@@ -159,16 +159,16 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
       <div
         style={{
           flex: 1,
-          margin: '0 var(--padding-md)',
+          margin: '0 16px',
           position: 'relative',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: '#161412',
-          borderRadius: 'clamp(16px, 4vw, 24px)',
+          borderRadius: '20px',
           border: '1.5px dashed rgba(255, 255, 255, 0.3)',
           overflow: 'hidden',
-          minHeight: 'clamp(240px, 50vh, 400px)'
+          minHeight: '280px'
         }}
       >
         {/* Real Live Video Feed */}
@@ -218,19 +218,18 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
             <button
               onClick={() => fileInputRef.current?.click()}
               style={{
-                padding: 'var(--padding-xs) var(--padding-sm)',
+                padding: '10px 16px',
                 backgroundColor: '#d97706',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                fontSize: 'var(--font-size-sm)',
+                fontSize: '13px',
                 fontWeight: 600,
                 transition: 'all 0.2s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 'var(--gap-sm)',
-                minHeight: 'var(--button-height-sm)'
+                gap: '6px'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#b45309';
@@ -239,7 +238,7 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
                 e.currentTarget.style.backgroundColor = '#d97706';
               }}
             >
-              <Upload size={clamp(12, '2.5vw', 16)} />
+              <Upload size={14} />
               <span>Upload</span>
             </button>
             <input 
@@ -259,10 +258,10 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
         )}
 
         {/* Viewfinder Target Framing Corners */}
-        <div style={{ position: 'absolute', top: 'clamp(8px, 2vw, 16px)', left: 'clamp(8px, 2vw, 16px)', width: 'clamp(16px, 3vw, 24px)', height: 'clamp(16px, 3vw, 24px)', borderTop: '2.5px solid #FFF', borderLeft: '2.5px solid #FFF', borderRadius: '4px 0 0 0', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', top: 'clamp(8px, 2vw, 16px)', right: 'clamp(8px, 2vw, 16px)', width: 'clamp(16px, 3vw, 24px)', height: 'clamp(16px, 3vw, 24px)', borderTop: '2.5px solid #FFF', borderRight: '2.5px solid #FFF', borderRadius: '0 4px 0 0', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: 'clamp(8px, 2vw, 16px)', left: 'clamp(8px, 2vw, 16px)', width: 'clamp(16px, 3vw, 24px)', height: 'clamp(16px, 3vw, 24px)', borderBottom: '2.5px solid #FFF', borderLeft: '2.5px solid #FFF', borderRadius: '0 0 0 4px', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: 'clamp(8px, 2vw, 16px)', right: 'clamp(8px, 2vw, 16px)', width: 'clamp(16px, 3vw, 24px)', height: 'clamp(16px, 3vw, 24px)', borderBottom: '2.5px solid #FFF', borderRight: '2.5px solid #FFF', borderRadius: '0 0 4px 0', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: 12, left: 12, width: 20, height: 20, borderTop: '2.5px solid #FFF', borderLeft: '2.5px solid #FFF', borderRadius: '4px 0 0 0', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: 12, right: 12, width: 20, height: 20, borderTop: '2.5px solid #FFF', borderRight: '2.5px solid #FFF', borderRadius: '0 4px 0 0', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: 12, left: 12, width: 20, height: 20, borderBottom: '2.5px solid #FFF', borderLeft: '2.5px solid #FFF', borderRadius: '0 0 0 4px', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: 12, right: 12, width: 20, height: 20, borderBottom: '2.5px solid #FFF', borderRight: '2.5px solid #FFF', borderRadius: '0 0 4px 0', pointerEvents: 'none' }} />
 
         {/* Floating Glassmorphic Lighting Banner Overlay */}
         {showLightingTip && (
@@ -270,23 +269,22 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
             className="animate-fade-in"
             style={{
               position: 'absolute',
-              bottom: 'var(--padding-sm)',
-              left: 'var(--padding-sm)',
-              right: 'var(--padding-sm)',
+              bottom: '12px',
+              left: '12px',
+              right: '12px',
               backgroundColor: 'rgba(15, 13, 11, 0.88)',
               backdropFilter: 'blur(8px)',
               color: '#FFFFFF',
-              padding: 'var(--padding-xs) var(--padding-sm)',
-              borderRadius: 'clamp(10px, 2vw, 14px)',
-              fontSize: 'var(--font-size-xs)',
+              padding: '10px 14px',
+              borderRadius: '12px',
+              fontSize: '11px',
               lineHeight: 1.4,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               zIndex: 5,
               border: '1px solid rgba(255, 255, 255, 0.15)',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
-              gap: 'var(--gap-sm)'
+              boxShadow: '0 4px 16px rgba(0,0,0,0.4)'
             }}
           >
             <div>
@@ -307,11 +305,11 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
       {/* Bottom Controls: Shutter Button & Demo Mode Switcher */}
       <div
         style={{
-          padding: 'var(--padding-md) var(--padding-md) var(--padding-lg)',
+          padding: '16px 16px 20px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 'var(--gap-md)'
+          gap: '10px'
         }}
       >
         {/* Outer Ring & Solid Shutter Button */}
@@ -320,8 +318,8 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
             className="pulse-glow-ring"
             style={{
               position: 'absolute',
-              width: 'clamp(64px, 14vw, 88px)',
-              height: 'clamp(64px, 14vw, 88px)',
+              width: '76px',
+              height: '76px',
               borderRadius: '50%',
               backgroundColor: 'rgba(255, 255, 255, 0.3)',
               pointerEvents: 'none'
@@ -331,8 +329,8 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
             type="button"
             onClick={() => onCapture(scenario)}
             style={{
-              width: 'clamp(56px, 12vw, 76px)',
-              height: 'clamp(56px, 12vw, 76px)',
+              width: '66px',
+              height: '66px',
               borderRadius: '50%',
               backgroundColor: '#FFFFFF',
               border: '4px solid rgba(255, 255, 255, 0.4)',
@@ -352,9 +350,10 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
 
         {/* Demo Text Display */}
         <p style={{
-          fontSize: 'var(--font-size-sm)',
+          fontSize: '12px',
           color: '#6B7280',
-          margin: 'var(--padding-sm) 0 0 0'
+          marginTop: '12px',
+          margin: '12px 0 0 0'
         }}>
           (demo → klik untuk lanjut)
         </p>

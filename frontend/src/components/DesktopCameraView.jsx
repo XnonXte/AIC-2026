@@ -85,17 +85,17 @@ export default function DesktopCameraView({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: 'var(--padding-xl)',
+      padding: '40px 24px',
       width: '100%',
-      maxWidth: '1400px',
+      maxWidth: '1200px',
       margin: '0 auto',
       color: '#FFFFFF',
       height: '100%'
     }}>
       <h1 style={{
-        fontSize: 'var(--font-size-xxl)',
+        fontSize: '28px',
         fontWeight: 700,
-        marginBottom: 'var(--padding-lg)',
+        marginBottom: '32px',
         color: '#FFFFFF'
       }}>
         Foto Material
@@ -104,10 +104,9 @@ export default function DesktopCameraView({
       {/* Material Tabs */}
       <div style={{
         display: 'flex',
-        gap: 'var(--gap-lg)',
-        marginBottom: 'var(--padding-lg)',
-        flexWrap: 'wrap',
-        justifyContent: 'center'
+        gap: '16px',
+        marginBottom: '32px',
+        flexWrap: 'wrap'
       }}>
         {MATERIALS.map((material) => {
           const isActive = selectedMaterial === material.id;
@@ -122,17 +121,16 @@ export default function DesktopCameraView({
               style={{
                 backgroundColor: bgColor,
                 border: isActive ? '1.5px solid ' + borderColor : '1px solid ' + borderColor,
-                padding: `var(--padding-xs) var(--padding-md)`,
+                padding: '10px 24px',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 'var(--gap-sm)',
+                gap: '8px',
                 color: textColor,
                 cursor: 'pointer',
                 fontWeight: 500,
                 transition: 'all 0.2s ease',
-                fontSize: 'var(--font-size-md)',
-                minHeight: 'var(--button-height-sm)'
+                fontSize: '14px'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)';
@@ -142,13 +140,13 @@ export default function DesktopCameraView({
               }}
             >
               {material.id === 'pet' ? (
-                <FlaskConical size={clamp(16, '3vw', 24)} color="#FFFFFF" />
+                <FlaskConical size={18} color="#FFFFFF" />
               ) : material.id === 'kardus' ? (
-                <Package size={clamp(16, '3vw', 24)} color="#FFFFFF" />
+                <Package size={18} color="#FFFFFF" />
               ) : (
-                <Container size={clamp(16, '3vw', 24)} color="#FFFFFF" />
+                <Container size={18} color="#FFFFFF" />
               )}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--gap-xs)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <span>{material.name}</span>
                 {isActive && <Check size={16} color="var(--color-accent-gold)" strokeWidth={3} />}
               </div>
@@ -165,10 +163,10 @@ export default function DesktopCameraView({
         onDrop={handleDrop}
         style={{
           width: '100%',
-          maxWidth: 'min(100%, 900px)',
-          height: 'clamp(300px, 60vh, 500px)',
+          maxWidth: '800px',
+          height: '400px',
           backgroundColor: '#161412',
-          borderRadius: 'clamp(20px, 4vw, 28px)',
+          borderRadius: '24px',
           border: dragActive ? '2px solid #d97706' : '1.5px dashed rgba(255, 255, 255, 0.3)',
           display: 'flex',
           alignItems: 'center',
@@ -217,7 +215,7 @@ export default function DesktopCameraView({
             alignItems: 'flex-start',
             justifyContent: 'flex-start',
             gap: '20px',
-            padding: 'var(--padding-md)',
+            padding: '24px',
             width: '100%',
             height: '100%',
             textAlign: 'left',
@@ -225,18 +223,18 @@ export default function DesktopCameraView({
           }}>
             <div style={{
               borderLeft: '4px solid #d97706',
-              paddingLeft: 'var(--padding-md)'
+              paddingLeft: '16px'
             }}>
               <p style={{
-                fontSize: 'var(--font-size-md)',
+                fontSize: '14px',
                 fontWeight: 600,
                 color: '#D1D5DB',
-                margin: '0 0 var(--gap-sm) 0'
+                margin: '0 0 8px 0'
               }}>
                 Pastikan pencahayaan cukup terang.
               </p>
               <p style={{
-                fontSize: 'var(--font-size-md)',
+                fontSize: '14px',
                 fontWeight: 500,
                 color: '#D1D5DB',
                 margin: 0
@@ -251,19 +249,18 @@ export default function DesktopCameraView({
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                padding: 'var(--padding-xs) var(--padding-sm)',
+                padding: '10px 16px',
                 backgroundColor: '#d97706',
                 color: '#FFFFFF',
                 border: 'none',
                 borderRadius: '8px',
                 cursor: 'pointer',
-                fontSize: 'var(--font-size-md)',
+                fontSize: '13px',
                 fontWeight: 600,
                 transition: 'all 0.2s ease',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 'var(--gap-sm)',
-                minHeight: 'var(--button-height-sm)'
+                gap: '6px'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#b45309';
@@ -272,7 +269,7 @@ export default function DesktopCameraView({
                 e.currentTarget.style.backgroundColor = '#d97706';
               }}
             >
-              <Upload size={clamp(12, '2.5vw', 16)} />
+              <Upload size={14} />
               Upload
             </button>
             <input

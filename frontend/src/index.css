@@ -28,34 +28,6 @@
   --radius-button: 12px;
   --radius-pill: 9999px;
   --touch-target-min: 48px;
-
-  /* Responsive Typography & Spacing Scales */
-  --font-size-xs: clamp(11px, 1.5vw, 13px);
-  --font-size-sm: clamp(12px, 2vw, 15px);
-  --font-size-base: clamp(14px, 2.5vw, 16px);
-  --font-size-md: clamp(15px, 3vw, 18px);
-  --font-size-lg: clamp(18px, 3.5vw, 24px);
-  --font-size-xl: clamp(24px, 5vw, 36px);
-  --font-size-xxl: clamp(28px, 6vw, 48px);
-
-  --padding-xs: clamp(8px, 1.5vw, 12px);
-  --padding-sm: clamp(12px, 2vw, 16px);
-  --padding-md: clamp(16px, 3vw, 24px);
-  --padding-lg: clamp(20px, 4vw, 32px);
-  --padding-xl: clamp(24px, 5vw, 40px);
-
-  --gap-xs: clamp(4px, 1vw, 8px);
-  --gap-sm: clamp(8px, 1.5vw, 12px);
-  --gap-md: clamp(12px, 2vw, 16px);
-  --gap-lg: clamp(16px, 3vw, 24px);
-
-  --button-height-sm: clamp(40px, 8vw, 48px);
-  --button-height-md: clamp(44px, 10vw, 56px);
-  --button-height-lg: clamp(48px, 12vw, 64px);
-
-  --icon-size-sm: clamp(16px, 3vw, 20px);
-  --icon-size-md: clamp(18px, 4vw, 24px);
-  --icon-size-lg: clamp(24px, 5vw, 32px);
 }
 
 /* Global Reset & Box Sizing */
@@ -70,88 +42,11 @@ body {
   background-color: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-body);
-  font-size: var(--font-size-base);
+  font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   min-height: 100dvh;
-}
-
-/* Extra Small Phones (320px - 374px) */
-@media (max-width: 374px) {
-  :root {
-    --font-size-base: 13px;
-    --padding-md: 12px;
-    --padding-lg: 16px;
-  }
-
-  body {
-    font-size: 13px;
-  }
-}
-
-/* Small Phones (375px - 479px) */
-@media (min-width: 375px) and (max-width: 479px) {
-  :root {
-    --font-size-base: 14px;
-  }
-}
-
-/* Medium Phones (480px - 599px) */
-@media (min-width: 480px) and (max-width: 599px) {
-  :root {
-    --font-size-base: 14px;
-  }
-}
-
-/* Large Phones / Small Tablets (600px - 767px) */
-@media (min-width: 600px) and (max-width: 767px) {
-  :root {
-    --font-size-base: 15px;
-  }
-}
-
-/* Tablets (768px - 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  :root {
-    --font-size-base: 15px;
-    --padding-lg: 28px;
-  }
-}
-
-/* Medium Desktops (1024px - 1279px) */
-@media (min-width: 1024px) and (max-width: 1279px) {
-  :root {
-    --font-size-base: 15px;
-  }
-}
-
-/* Large Desktops (1280px and above) */
-@media (min-width: 1280px) {
-  :root {
-    --font-size-base: 16px;
-  }
-}
-
-/* Ultra-wide screens (1920px and above) */
-@media (min-width: 1920px) {
-  :root {
-    --font-size-base: 16px;
-    --padding-xl: 48px;
-  }
-}
-
-/* Landscape Mode - Small viewports */
-@media (orientation: landscape) and (max-height: 500px) {
-  :root {
-    --padding-md: 8px;
-    --padding-lg: 12px;
-  }
-
-  .app-frame {
-    height: 100vh;
-    max-height: 100vh;
-  }
 }
 
 /* App Outer Container — Mobile Only */
