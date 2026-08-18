@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { TrendingUp, Award, AlertCircle, CheckCircle, XCircle, Copy, Download, Phone, MapPin, Star, Camera } from 'lucide-react';
+import { AlertCircle, CheckCircle, XCircle, Phone, MapPin, Star, Camera } from 'lucide-react';
 
 /**
  * DesktopResultsPanel Component
- * Professional results display with buyer recommendations and analytics
+ * Professional results display with buyer recommendations
  */
 export default function DesktopResultsPanel({
   resultData,
@@ -12,8 +12,6 @@ export default function DesktopResultsPanel({
   onRetake,
   onProceed
 }) {
-  const [copiedId, setCopiedId] = useState(null);
-
   if (!resultData) {
     return (
       <div style={{
@@ -61,39 +59,38 @@ export default function DesktopResultsPanel({
     <div style={{
       width: '100%',
       height: '100%',
-      minHeight: '100vh',
-      padding: '32px 16px',
+      padding: '24px',
       backgroundColor: '#EFE7D8',
       overflow: 'auto',
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'center'
     }}>
-      {/* Centered Container */}
+      {/* Main Container */}
       <div style={{
         width: '100%',
-        maxWidth: '1200px',
+        maxWidth: '1100px',
         display: 'grid',
-        gridTemplateColumns: '1fr 1.5fr',
-        gap: '32px',
-        height: 'fit-content'
+        gridTemplateColumns: 'minmax(280px, 350px) 1fr',
+        gap: '24px',
+        alignItems: 'start'
       }}>
-        {/* Left Panel: Grade Info (1/3) */}
+        {/* Left Panel: Photo & Grade */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '16px'
+          gap: '12px'
         }}>
           {/* Captured Photo */}
           {capturedPhoto && (
             <div style={{
               backgroundColor: '#FFFFFF',
-              borderRadius: '24px',
+              borderRadius: '16px',
               overflow: 'hidden',
               boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
               border: '1px solid rgba(216, 203, 176, 0.5)',
               aspectRatio: '4 / 3',
-              maxHeight: '300px'
+              width: '100%'
             }}>
               <img
                 src={capturedPhoto}
@@ -107,43 +104,40 @@ export default function DesktopResultsPanel({
             </div>
           )}
 
-          {/* Grade Circle Badge - Dipanjangkan */}
+          {/* Grade Badge Card */}
           <div style={{
             backgroundColor: '#FFFFFF',
-            borderRadius: '24px',
-            padding: '40px 32px',
+            borderRadius: '16px',
+            padding: '20px',
             boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
             border: '1px solid rgba(216, 203, 176, 0.5)',
             textAlign: 'center',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            minHeight: '420px',
-            justifyContent: 'space-between'
+            gap: '12px',
+            alignItems: 'center'
           }}>
             {/* Grade Circle */}
             <div style={{
-              width: '160px',
-              height: '160px',
+              width: '100px',
+              height: '100px',
               borderRadius: '50%',
-              border: `4px solid #528f52`,
+              border: `3px solid #528f52`,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: '16px',
               position: 'relative'
             }}>
-              {/* Inner Dashed Circle */}
               <div style={{
                 position: 'absolute',
-                inset: '8px',
+                inset: '5px',
                 borderRadius: '50%',
-                border: '1.5px dashed #528f52',
+                border: `1.5px dashed #528f52`,
                 pointerEvents: 'none'
               }} />
               <span style={{
-                fontSize: '64px',
+                fontSize: '40px',
                 fontWeight: 700,
                 color: '#528f52',
                 lineHeight: 1,
@@ -151,52 +145,53 @@ export default function DesktopResultsPanel({
               }}>
                 {resultData.grade || 'A'}
               </span>
-              <span style={{
+            </div>
+
+            <div>
+              <p style={{
                 fontSize: '12px',
                 fontWeight: 700,
                 color: '#528f52',
-                marginTop: '4px',
                 letterSpacing: '0.5px',
+                margin: 0,
                 fontFamily: 'var(--font-display)'
               }}>
                 GRADE {resultData.grade || 'A'}
-              </span>
+              </p>
+              <p style={{
+                fontSize: '13px',
+                color: '#2A211A',
+                fontWeight: 600,
+                margin: '4px 0 0 0'
+              }}>
+                Keyakinan: {resultData.confidenceScore || 85}%
+              </p>
             </div>
 
-            {/* Confidence Score */}
-            <p style={{
-              fontSize: '16px',
-              color: '#2A211A',
-              fontWeight: 600,
-              margin: '0 0 20px 0'
-            }}>
-              Keyakinan sistem: <span style={{ fontWeight: 700 }}>{resultData.confidenceScore || 85}%</span>
-            </p>
-
-            {/* Material Info Card */}
+            {/* Material Info */}
             <div style={{
               backgroundColor: '#faf9f6',
               width: '100%',
-              borderRadius: '16px',
-              padding: '20px',
+              borderRadius: '12px',
+              padding: '10px',
               border: '1px solid #e0d5c7',
               textAlign: 'left'
             }}>
               <h3 style={{
-                fontSize: '17px',
+                fontSize: '12px',
                 fontWeight: 700,
                 color: '#2A211A',
-                margin: '0 0 6px 0'
+                margin: '0 0 3px 0'
               }}>
-                {resultData.materialName || 'PET - Botol bening, dipres rapi'}
+                {resultData.materialName || 'PET'}
               </h3>
               <p style={{
-                fontSize: '14px',
+                fontSize: '11px',
                 color: '#7A6E5F',
                 margin: 0,
-                lineHeight: '1.4'
+                lineHeight: '1.3'
               }}>
-                {resultData.description || 'Tanpa label, tanpa residu terlihat'}
+                {resultData.description || 'Material'}
               </p>
             </div>
           </div>
@@ -205,53 +200,48 @@ export default function DesktopResultsPanel({
           <button
             onClick={onRetake}
             style={{
-              padding: '16px 20px',
-              borderRadius: '12px',
-              border: 'none',
-              backgroundColor: '#a05526',
+              padding: '12px',
+              backgroundColor: '#A8481F',
               color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '10px',
               cursor: 'pointer',
-              fontSize: '16px',
-              fontWeight: 700,
+              fontSize: '13px',
+              fontWeight: 600,
               transition: 'all 0.2s ease',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '8px',
-              boxShadow: '0 4px 16px rgba(160, 85, 38, 0.35)',
-              minHeight: '48px'
+              gap: '6px'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#8b4920';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#a05526';
-            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#7A3216'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#A8481F'}
           >
-            <Camera size={18} />
-            <span>Foto Material Lagi</span>
+            <Camera size={14} />
+            Foto Ulang
           </button>
         </div>
 
-        {/* Right Panel: Buyer Recommendations (2/3) */}
+        {/* Right Panel: Buyer Recommendations */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '16px',
-          height: 'fit-content'
+          maxHeight: 'calc(100vh - 48px)',
+          overflowY: 'auto'
         }}>
-          {/* Title */}
+          {/* Header */}
           <div>
             <h2 style={{
-              fontSize: '26px',
+              fontSize: '24px',
               fontWeight: 700,
               color: '#2A211A',
-              margin: '0 0 6px 0'
+              margin: '0 0 4px 0'
             }}>
-              Rekomendasi pembeli
+              Rekomendasi Pembeli
             </h2>
             <p style={{
-              fontSize: '15px',
+              fontSize: '13px',
               color: '#7A6E5F',
               margin: 0
             }}>
@@ -263,23 +253,20 @@ export default function DesktopResultsPanel({
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px',
-            maxHeight: '600px',
-            overflowY: 'auto',
-            paddingRight: '8px'
+            gap: '12px'
           }}>
             {resultData.buyers && resultData.buyers.map((buyer, index) => (
               <div
                 key={buyer.id}
                 style={{
                   backgroundColor: '#FFFFFF',
-                  borderRadius: '16px',
-                  padding: '20px',
+                  borderRadius: '12px',
+                  padding: '16px',
                   boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                   border: '1px solid rgba(216, 203, 176, 0.5)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '12px',
+                  gap: '10px',
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
@@ -289,86 +276,52 @@ export default function DesktopResultsPanel({
                   e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
                 }}
               >
-                {/* Top Row: Rank & Company Info + Price */}
+                {/* Top Row */}
                 <div style={{
                   display: 'flex',
                   alignItems: 'flex-start',
                   justifyContent: 'space-between',
-                  gap: '16px'
+                  gap: '12px'
                 }}>
-                  {/* Left: Rank & Company Info */}
+                  {/* Left: Rank & Company */}
                   <div style={{
                     display: 'flex',
                     alignItems: 'flex-start',
-                    gap: '16px',
+                    gap: '10px',
                     flex: 1
                   }}>
                     <div style={{
-                      width: '40px',
-                      height: '40px',
+                      width: '36px',
+                      height: '36px',
                       borderRadius: '50%',
                       backgroundColor: index === 0 ? '#C89238' : '#EAE5D9',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '14px',
+                      fontSize: '13px',
                       fontWeight: 700,
                       color: index === 0 ? '#FFFFFF' : '#5C4F41',
-                      flexShrink: 0,
-                      boxShadow: index === 0 ? '0 2px 8px rgba(200, 146, 56, 0.4)' : 'none'
+                      flexShrink: 0
                     }}>
                       {index + 1}
                     </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        marginBottom: '4px'
-                      }}>
-                        <h3 style={{
-                          fontSize: '18px',
-                          fontWeight: 700,
-                          color: '#2A211A',
-                          margin: 0
-                        }}>
-                          {buyer.name}
-                        </h3>
-                        {buyer.rating && (
-                          <span style={{
-                            fontSize: '11px',
-                            fontWeight: 600,
-                            color: '#C89238',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '3px',
-                            backgroundColor: 'rgba(200, 146, 56, 0.1)',
-                            padding: '2px 6px',
-                            borderRadius: '4px'
-                          }}>
-                            <Star size={10} fill="#C89238" color="#C89238" />
-                            {buyer.rating}
-                          </span>
-                        )}
-                      </div>
-                      <p style={{
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <h3 style={{
                         fontSize: '14px',
-                        color: '#7A6E5F',
-                        margin: '0 0 6px 0'
+                        fontWeight: 700,
+                        color: '#2A211A',
+                        margin: 0,
+                        wordBreak: 'break-word'
                       }}>
-                        {buyer.distanceKm ?? '2.1 km'} • {buyer.capacityStatus || 'Kapasitas tersedia'}
-                      </p>
-                      <span className={buyer.isRealData ? 'badge-data-asli' : 'badge-data-simulasi'} style={{
+                        {buyer.name}
+                      </h3>
+                      <p style={{
                         fontSize: '12px',
-                        fontWeight: 600,
-                        padding: '3px 10px',
-                        borderRadius: '4px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px'
+                        color: '#7A6E5F',
+                        margin: '2px 0 0 0'
                       }}>
-                        <span style={{ fontSize: '7px' }}>●</span> {buyer.isRealData ? 'Data Asli' : 'Data Simulasi'}
-                      </span>
+                        {buyer.distanceKm} km • {buyer.capacityStatus}
+                      </p>
                     </div>
                   </div>
 
@@ -378,102 +331,80 @@ export default function DesktopResultsPanel({
                     flexShrink: 0
                   }}>
                     <div style={{
-                      fontSize: '24px',
+                      fontSize: '16px',
                       fontWeight: 700,
                       color: '#C89238'
                     }}>
                       Rp {buyer.pricePerKg?.toLocaleString('id-ID')}
                     </div>
-                    <span style={{
-                      fontSize: '13px',
+                    <div style={{
+                      fontSize: '11px',
                       color: '#7A6E5F'
                     }}>
                       /kg
-                    </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Separator */}
+                {/* Contact Buttons */}
                 <div style={{
-                  height: '1px',
-                  backgroundColor: 'rgba(216, 203, 176, 0.5)',
-                  margin: '8px 0 0 0',
-                  borderTop: '1px dashed rgba(216, 203, 176, 0.5)'
-                }} />
-
-                {/* Bottom Action Buttons */}
-                <div style={{
-                  display: 'flex',
-                  gap: '10px',
-                  alignItems: 'center'
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '8px'
                 }}>
-                  {/* Hubungi Pembeli Button */}
                   <button
-                    type="button"
-                    onClick={() => {
-                      alert(`Menghubungi ${buyer.name} (Simulasi Telepon/WhatsApp)...`);
-                    }}
+                    onClick={() => window.open(`https://wa.me/${buyer.phone}`)}
                     style={{
-                      flex: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '6px',
-                      padding: '10px 12px',
-                      borderRadius: '8px',
+                      padding: '8px 10px',
                       backgroundColor: 'rgba(168, 72, 31, 0.08)',
                       border: '1px solid rgba(168, 72, 31, 0.2)',
                       color: '#A8481F',
-                      fontSize: '13px',
-                      fontWeight: 600,
+                      borderRadius: '8px',
                       cursor: 'pointer',
-                      minHeight: '40px',
-                      transition: 'all 0.15s ease'
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '4px',
+                      transition: 'all 0.2s ease'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'rgba(168, 72, 31, 0.15)';
+                      e.currentTarget.style.backgroundColor = 'rgba(168, 72, 31, 0.12)';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.backgroundColor = 'rgba(168, 72, 31, 0.08)';
                     }}
                   >
-                    <Phone size={14} />
-                    <span>Hubungi Pembeli</span>
+                    <Phone size={12} />
+                    Hubungi
                   </button>
-
-                  {/* Lokasi/Peta Button */}
                   <button
-                    type="button"
-                    onClick={() => {
-                      const query = encodeURIComponent(buyer.address || buyer.name);
-                      window.open(`https://maps.google.com/?q=${query}`, '_blank');
-                    }}
+                    onClick={() => window.open(`https://maps.google.com/?q=${encodeURIComponent(buyer.address)}`)}
                     style={{
+                      padding: '8px 10px',
+                      backgroundColor: '#f5eee6',
+                      border: '1px solid #e0d5c7',
+                      color: '#7A6E5F',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '11px',
+                      fontWeight: 600,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '4px',
-                      padding: '10px 14px',
-                      borderRadius: '8px',
-                      backgroundColor: '#F5EFE6',
-                      border: '1px solid rgba(216, 203, 176, 0.5)',
-                      color: '#7A6E5F',
-                      fontSize: '13px',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      minHeight: '40px',
-                      transition: 'all 0.15s ease',
-                      title: 'Buka Lokasi di Google Maps'
+                      transition: 'all 0.2s ease'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#E9DFD3';
+                      e.currentTarget.style.backgroundColor = '#ede5db';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#F5EFE6';
+                      e.currentTarget.style.backgroundColor = '#f5eee6';
                     }}
                   >
-                    <MapPin size={14} />
-                    <span>Peta</span>
+                    <MapPin size={12} />
+                    Peta
                   </button>
                 </div>
               </div>
