@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertCircle, CheckCircle, XCircle, Phone, MapPin, Star, Camera } from 'lucide-react';
+import { AlertCircle, CheckCircle, XCircle, Phone, MapPin, Star, Camera, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /**
  * DesktopResultsPanel Component
@@ -12,6 +12,8 @@ export default function DesktopResultsPanel({
   onRetake,
   onProceed
 }) {
+  const [activeItemIndex, setActiveItemIndex] = useState(0);
+
   if (!resultData) {
     return (
       <div style={{
@@ -25,6 +27,10 @@ export default function DesktopResultsPanel({
       </div>
     );
   }
+
+  // Check if multiple items
+  const isMultiple = Array.isArray(resultData.items) && resultData.items.length > 1;
+  const currentItem = isMultiple ? resultData.items[activeItemIndex] : (resultData.items ? resultData.items[0] : resultData);
 
   const getStatusBadge = (status) => {
     let icon, color, label;
@@ -54,6 +60,14 @@ export default function DesktopResultsPanel({
   };
 
   const statusInfo = getStatusBadge(resultData.statusCode);
+
+  const handlePrevItem = () => {
+    setActiveItemIndex(prev => prev > 0 ? prev - 1 : resultData.items.length - 1);
+  };
+
+  const handleNextItem = () => {
+    setActiveItemIndex(prev => prev < resultData.items.length - 1 ? prev + 1 : 0);
+  };
 
   return (
     <div style={{
@@ -104,6 +118,25 @@ export default function DesktopResultsPanel({
             </div>
           )}
 
+          {/* Multiple Items Indicator */}
+          {isMultiple && (
+            <div style={{
+              backgroundColor: '#FFFFFF',
+              borderRadius: '12px',
+              padding: '12px 14px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+              border: '1px solid rgba(216, 203, 176, 0.5)',
+              textAlign: 'center',
+              fontSize: '13px',
+              color: '#7A6E5F',
+              fontWeight: 600
+            }}>
+              <span>Ditemukan {resultData.items.length} item</span>
+              <span style={{ margin: '0 6px', color: '#D4AF37' }}>•</span>
+              <span>Item {activeItemIndex + 1} dari {resultData.items.length}</span>
+            </div>
+          )}
+
           {/* Grade Badge Card */}
           <div style={{
             backgroundColor: '#FFFFFF',
@@ -143,7 +176,7 @@ export default function DesktopResultsPanel({
                 lineHeight: 1,
                 fontFamily: 'var(--font-display)'
               }}>
-                {resultData.grade || 'A'}
+                {currentItem.grade || 'A'}
               </span>
             </div>
 
@@ -156,7 +189,7 @@ export default function DesktopResultsPanel({
                 margin: 0,
                 fontFamily: 'var(--font-display)'
               }}>
-                GRADE {resultData.grade || 'A'}
+                GRADE {currentItem.grade || 'A'}
               </p>
               <p style={{
                 fontSize: '13px',
@@ -164,7 +197,7 @@ export default function DesktopResultsPanel({
                 fontWeight: 600,
                 margin: '4px 0 0 0'
               }}>
-                Keyakinan: {resultData.confidenceScore || 85}%
+                Keyakinan: {currentItem.confidenceScore || 85}%
               </p>
             </div>
 
@@ -183,7 +216,7 @@ export default function DesktopResultsPanel({
                 color: '#2A211A',
                 margin: '0 0 3px 0'
               }}>
-                {resultData.materialName || 'PET'}
+                {currentItem.materialName || 'Material'}
               </h3>
               <p style={{
                 fontSize: '11px',
@@ -191,10 +224,82 @@ export default function DesktopResultsPanel({
                 margin: 0,
                 lineHeight: '1.3'
               }}>
-                {resultData.description || 'Material'}
+                {currentItem.description || 'Deskripsi material'}
               </p>
             </div>
           </div>
+
+          {/* Navigation for Multiple Items */}
+          {isMultiple && (
+            <div style={{
+              display: 'flex',
+              gap: '8px',
+              justifyContent: 'center'
+            }}>
+              <button
+                onClick={handlePrevItem}
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '10px',
+                  backgroundColor: '#f5eee6',
+                  border: '1px solid #e0d5c7',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ede5db'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f5eee6'}
+              >
+                <ChevronLeft size={18} color="#7A6E5F" />
+              </button>
+
+              {/* Dot Indicators */}
+              <div style={{
+                display: 'flex',
+                gap: '6px',
+                alignItems: 'center'
+              }}>
+                {resultData.items.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveItemIndex(idx)}
+                    style={{
+                      width: idx === activeItemIndex ? '28px' : '10px',
+                      height: '10px',
+                      borderRadius: '5px',
+                      backgroundColor: idx === activeItemIndex ? '#C89238' : '#e0d5c7',
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease'
+                    }}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={handleNextItem}
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '10px',
+                  backgroundColor: '#f5eee6',
+                  border: '1px solid #e0d5c7',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ede5db'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f5eee6'}
+              >
+                <ChevronRight size={18} color="#7A6E5F" />
+              </button>
+            </div>
+          )}
 
           {/* Retake Button */}
           <button
@@ -245,7 +350,7 @@ export default function DesktopResultsPanel({
               color: '#7A6E5F',
               margin: 0
             }}>
-              Terurut dari yang terbaik untuk {resultData.materialName || selectedMaterial.toUpperCase()} Grade {resultData.grade}
+              Terurut dari yang terbaik untuk {currentItem.materialName || selectedMaterial.toUpperCase()} Grade {currentItem.grade}
             </p>
           </div>
 
@@ -255,7 +360,7 @@ export default function DesktopResultsPanel({
             flexDirection: 'column',
             gap: '12px'
           }}>
-            {resultData.buyers && resultData.buyers.map((buyer, index) => (
+            {currentItem.buyers && currentItem.buyers.map((buyer, index) => (
               <div
                 key={buyer.id}
                 style={{

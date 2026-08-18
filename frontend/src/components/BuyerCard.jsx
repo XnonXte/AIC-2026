@@ -61,50 +61,17 @@ export default function BuyerCard({ buyer, rank = 1 }) {
             {rank}
           </div>
 
-          {/* Buyer Main Info */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <h4 style={{ fontSize: '15px', fontWeight: 700, color: '#2A211A', margin: 0 }}>
-                {buyer.name}
-              </h4>
-              {buyer.rating && (
-                <span
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    color: '#C89238',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '2px',
-                    backgroundColor: 'rgba(200, 146, 56, 0.1)',
-                    padding: '1px 5px',
-                    borderRadius: '4px'
-                  }}
-                >
-                  <Star size={10} fill="#C89238" color="#C89238" />
-                  {buyer.rating}
-                </span>
-              )}
-            </div>
+           {/* Buyer Main Info */}
+           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+             <h4 style={{ fontSize: '15px', fontWeight: 700, color: '#2A211A', margin: 0 }}>
+               {buyer.name}
+             </h4>
 
-            <div style={{ fontSize: '12px', color: '#7A6E5F', display: 'flex', gap: '6px', alignItems: 'center' }}>
-              <span> {buyer.distanceKm} km</span>
-              <span>•</span>
-              <span style={{ fontWeight: 500 }}>{buyer.capacityStatus}</span>
-            </div>
-
-            {/* Badge Data Asli vs Data Simulasi */}
-            <div style={{ marginTop: '4px' }}>
-              {buyer.isRealData ? (
-                <span className="badge-data-asli">
-                  <span style={{ fontSize: '7px' }}>●</span> Data Asli
-                </span>
-              ) : (
-                <span className="badge-data-simulasi">
-                  <span style={{ fontSize: '7px' }}>●</span> Data Simulasi
-                </span>
-              )}
-            </div>
+             <div style={{ fontSize: '12px', color: '#7A6E5F', display: 'flex', gap: '6px', alignItems: 'center' }}>
+               <span>{buyer.distanceKm} km</span>
+               <span>•</span>
+               <span style={{ fontWeight: 500 }}>{buyer.capacityStatus}</span>
+             </div>
           </div>
         </div>
 
