@@ -63,6 +63,7 @@ body {
 
 .app-frame {
   width: 100%;
+  max-width: 480px;
   height: 100vh;
   height: 100dvh;
   max-height: 100dvh;
@@ -249,4 +250,36 @@ h1, h2, h3, h4 {
   background: rgba(92, 79, 65, 0.25);
   border-radius: 4px;
 }
+
+/* Responsive Viewfinder - Maintain 4:3 Aspect Ratio */
+.camera-viewfinder {
+  aspect-ratio: 4 / 3;
+  max-height: 60vh;
+}
+
+/* Responsive Price - Prevent wrapping */
+.buyer-price {
+  min-width: max-content;
+}
+
+/* Tablet and below - Optimize spacing */
+@media (max-width: 768px) {
+  .camera-viewfinder {
+    aspect-ratio: 4 / 3;
+    max-height: 55vh;
+  }
+  
+  .buyer-price {
+    min-width: max-content;
+  }
+}
+
+/* Small phones - Compact layout */
+@media (max-width: 480px) {
+  .camera-viewfinder {
+    aspect-ratio: 4 / 3;
+    max-height: 50vh;
+  }
+}
+
 

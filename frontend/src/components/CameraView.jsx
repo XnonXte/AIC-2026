@@ -157,6 +157,7 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
 
       {/* Main Camera Viewfinder View */}
       <div
+        className="camera-viewfinder"
         style={{
           flex: 1,
           margin: '0 16px',

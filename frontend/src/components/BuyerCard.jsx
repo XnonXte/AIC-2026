@@ -109,7 +109,7 @@ export default function BuyerCard({ buyer, rank = 1 }) {
         </div>
 
         {/* Right Column: Price/kg Accent */}
-        <div style={{ textAlign: 'right', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '90px' }}>
+        <div className="buyer-price" style={{ textAlign: 'right', whiteSpace: 'nowrap', flexShrink: 0 }}>
           <div
             style={{
               fontSize: '24px',
