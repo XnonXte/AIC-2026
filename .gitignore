@@ -1,0 +1,36 @@
+# Python backend local files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local model weights and runtime artifacts
+models/*.pt
+*.pkl
+
+# Node / frontend local files
+node_modules/
+.pnpm-store/
+frontend/node_modules/
+
+# Build output
+dist/
+build/
+.vite/
+frontend/dist/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDE, OS & temporary files
+.DS_Store
+Thumbs.db
+*.log
+commit_history.*
+rebuild_5_commits.*
+test_write.txt
