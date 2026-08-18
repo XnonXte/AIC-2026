@@ -1,18 +1,7 @@
 import React from 'react';
 import { AlertTriangle, AlertCircle, Info, RefreshCw, ArrowRight, ShieldAlert } from 'lucide-react';
 
-/**
- * ExclusionCard Component (Exclusion Matrix)
- * Specification 3.3:
- * Mengikuti pola tetap:
- * [Ikon status] [Judul singkat status]
- * [Pesan actionable - bahasa exclusion matrix]
- * [Tombol aksi]
- * Warna border kartu mengikuti tingkat keparahan:
- * - TOLAK_FOTO, TOLAK_PENILAIAN, TOLAK_TOTAL -> border --color-grade-c
- * - LOLOS_DENGAN_PERINGATAN -> border --color-info
- * - DOWNGRADE_PAKSA -> border --color-grade-b + catatan "Grade diturunkan otomatis"
- */
+
 export default function ExclusionCard({ data, onRetake, onProceed }) {
   const { statusCode, title, actionableMessage, actionButtonText, secondaryButtonText, severity } = data;
 
@@ -34,11 +23,13 @@ export default function ExclusionCard({ data, onRetake, onProceed }) {
   }
 
   return (
-    <div 
+    <div
       className="card-surface animate-fade-in"
       style={{
         borderLeft: `5px solid ${borderColor}`,
-        borderColor: severity === 'info' ? 'var(--color-info)' : 'var(--color-border)',
+        borderTop: `1px solid ${severity === 'info' ? 'var(--color-info)' : 'var(--color-border)'}`,
+        borderRight: `1px solid ${severity === 'info' ? 'var(--color-info)' : 'var(--color-border)'}`,
+        borderBottom: `1px solid ${severity === 'info' ? 'var(--color-info)' : 'var(--color-border)'}`,
         backgroundColor: bgTint,
         padding: '20px',
         display: 'flex',
@@ -48,7 +39,7 @@ export default function ExclusionCard({ data, onRetake, onProceed }) {
     >
       {/* Header: Icon + Title */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div 
+        <div
           style={{
             width: '40px',
             height: '40px',
@@ -68,8 +59,8 @@ export default function ExclusionCard({ data, onRetake, onProceed }) {
           <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--color-ink)' }}>
             {title}
           </h3>
-          <span 
-            className="text-mono" 
+          <span
+            className="text-mono"
             style={{ fontSize: '12px', color: 'var(--color-ink-soft)', opacity: 0.8 }}
           >
             Status: {statusCode}
@@ -79,7 +70,7 @@ export default function ExclusionCard({ data, onRetake, onProceed }) {
 
       {/* Downgrade Paksa Transparent Tag */}
       {statusCode === 'DOWNGRADE_PAKSA' && (
-        <div 
+        <div
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -107,7 +98,7 @@ export default function ExclusionCard({ data, onRetake, onProceed }) {
       {/* Action Buttons */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '4px' }}>
         {/* Primary Action Button */}
-        <button 
+        <button
           className="btn btn-primary"
           onClick={() => {
             if (statusCode === 'TOLAK_FOTO' || statusCode === 'TOLAK_PENILAIAN') {

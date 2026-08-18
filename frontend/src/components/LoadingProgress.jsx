@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 
-/**
- * LoadingProgress Component (100% Mockup Screen 2 Exact Match)
- * Dark khaki background, 'Menilai material kamu' header,
- * 3-step progress checklist with green checks and step 3 active number indicator,
- * and bottom demo state trigger link.
- */
+
 export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
   const [currentStage, setCurrentStage] = useState(1);
 
@@ -31,7 +26,7 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
   }, [onComplete, scenario]);
 
   return (
-    <div 
+    <div
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -42,10 +37,10 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
         color: '#FFFFFF',
         position: 'relative',
         padding: '24px 20px',
-        minHeight: '100%'
+        overflowY: 'auto'
       }}
     >
-      {/* Centered Title & Subtitle (Exact Mockup Match) */}
+
       <div style={{ textAlign: 'center', marginBottom: '36px' }}>
         <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-display)', marginBottom: '4px' }}>
           Menilai material kamu
@@ -55,8 +50,8 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
         </p>
       </div>
 
-      {/* 3 Step Checklist (Exact Mockup Match) */}
-      <div 
+
+      <div
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -67,7 +62,7 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
       >
         {/* Step 1 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div 
+          <div
             style={{
               width: '24px',
               height: '24px',
@@ -90,7 +85,7 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
 
         {/* Step 2 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div 
+          <div
             style={{
               width: '24px',
               height: '24px',
@@ -113,7 +108,7 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
 
         {/* Step 3 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div 
+          <div
             style={{
               width: '24px',
               height: '24px',
@@ -137,7 +132,7 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
 
       {/* Bottom Demo Link (Exact Mockup Match: (demo → lihat state gagal/timeout)) */}
       <div style={{ position: 'absolute', bottom: '20px', left: 0, right: 0, textAlign: 'center' }}>
-        <button 
+        <button
           type="button"
           onClick={() => onComplete('EXCLUSION_TOLAK_FOTO')}
           style={{

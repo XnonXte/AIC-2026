@@ -51,9 +51,20 @@ export default function HistoryDrawer({ isOpen, onClose, historyList }) {
           </div>
           <button 
             onClick={onClose}
-            style={{ background: 'none', border: 'none', color: '#FFFFFF', cursor: 'pointer' }}
+            style={{ 
+              background: 'rgba(255, 255, 255, 0.12)', 
+              border: 'none', 
+              color: '#FFFFFF', 
+              cursor: 'pointer',
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           >
-            <X size={22} />
+            <X size={20} />
           </button>
         </div>
 

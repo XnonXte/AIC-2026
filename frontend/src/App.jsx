@@ -7,7 +7,7 @@ import ExclusionCard from './components/ExclusionCard';
 import BuyerCard from './components/BuyerCard';
 import HistoryDrawer from './components/HistoryDrawer';
 import { MOCK_GRADING_RESULTS, INITIAL_HISTORY } from './data/mockData';
-import { Camera, RefreshCw, Sliders } from 'lucide-react';
+import { Camera, Sliders, Smartphone } from 'lucide-react';
 
 export default function App() {
   // Navigation & View States
@@ -15,7 +15,6 @@ export default function App() {
   const [selectedMaterial, setSelectedMaterial] = useState('pet');
   const [scenario, setScenario] = useState('GRADED_A');
   const [resultData, setResultData] = useState(MOCK_GRADING_RESULTS.GRADED_A);
-  const [isDesktopView, setIsDesktopView] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [historyList, setHistoryList] = useState(INITIAL_HISTORY);
 
@@ -46,194 +45,203 @@ export default function App() {
   };
 
   return (
-    <div className="app-viewport-wrapper">
-      <div className={`app-frame ${isDesktopView ? 'desktop-wide-view' : ''}`}>
-        
-        {/* Header Bar only for Result Screen or Desktop toggle */}
-        {currentView === 'RESULT' && (
-          <Header 
-            onOpenHistory={() => setIsHistoryOpen(true)}
-            isDesktopView={isDesktopView}
-            onToggleView={() => setIsDesktopView(!isDesktopView)}
-          />
-        )}
+    <>
+      {/* Desktop Blocker — shown only on screens > 640px */}
+      <div className="desktop-blocker">
+        <div
+          style={{
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            backgroundColor: 'rgba(168, 72, 31, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '24px'
+          }}
+        >
+          <Smartphone size={36} color="#A8481F" />
+        </div>
+        <h2
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '22px',
+            fontWeight: 700,
+            color: '#FFFFFF',
+            marginBottom: '12px'
+          }}
+        >
+          Aplikasi Khusus Mobile
+        </h2>
+        <p
+          style={{
+            fontSize: '15px',
+            color: 'rgba(255, 255, 255, 0.65)',
+            maxWidth: '360px',
+            lineHeight: 1.6
+          }}
+        >
+          DaurAI Intelligence dirancang khusus untuk perangkat mobile.
+          Silakan buka di HP kamu untuk pengalaman terbaik.
+        </p>
 
-        {/* Screen 1: Camera Capture View (Exact Mockup Match) */}
-        {currentView === 'CAMERA' && (
-          <CameraView 
-            onCapture={handleCapture}
-            selectedMaterial={selectedMaterial}
-            setSelectedMaterial={setSelectedMaterial}
-            scenario={scenario}
-            setScenario={setScenario}
-          />
-        )}
+      </div>
 
-        {/* Screen 2: 3-Stage Process Loading (Exact Mockup Match) */}
-        {currentView === 'LOADING' && (
-          <LoadingProgress 
-            scenario={scenario}
-            onComplete={handleLoadingComplete}
-          />
-        )}
+      {/* Mobile App — hidden on desktop via CSS */}
+      <div className="app-viewport-wrapper">
+        <div className="app-frame">
 
-        {/* Screen 3: Result View & Buyer Recommendations (Exact Mockup Match) */}
-        {currentView === 'RESULT' && (
-          <div 
-            style={{
-              padding: '16px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              backgroundColor: '#EFE7D8',
-              flex: 1,
-              paddingBottom: '90px'
-            }}
-          >
-            {/* Top Interactive Demo Scenario Switcher */}
-            <div 
+          {/* Header Bar only for Result Screen */}
+          {currentView === 'RESULT' && (
+            <Header
+              onOpenHistory={() => setIsHistoryOpen(true)}
+            />
+          )}
+
+          {/* Screen 1: Camera Capture View */}
+          {currentView === 'CAMERA' && (
+            <CameraView
+              onCapture={handleCapture}
+              selectedMaterial={selectedMaterial}
+              setSelectedMaterial={setSelectedMaterial}
+              scenario={scenario}
+              setScenario={setScenario}
+            />
+          )}
+
+          {/* Screen 2: 3-Stage Process Loading */}
+          {currentView === 'LOADING' && (
+            <LoadingProgress
+              scenario={scenario}
+              onComplete={handleLoadingComplete}
+            />
+          )}
+
+          {/* Screen 3: Result View & Buyer Recommendations */}
+          {currentView === 'RESULT' && (
+            <div
               style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                borderRadius: '12px',
-                padding: '8px 12px',
-                border: '1px solid var(--color-border)',
+                padding: '16px',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
+                flexDirection: 'column',
+                gap: '16px',
+                backgroundColor: '#EFE7D8',
+                flex: 1,
+                overflowY: 'auto',
+                paddingBottom: '90px'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'var(--color-ink)' }}>
-                <Sliders size={14} color="var(--color-primary)" />
-                <span style={{ fontWeight: 600 }}>Mode Demo:</span>
-                <span className="text-mono" style={{ fontSize: '11px', color: 'var(--color-primary)' }}>{scenario}</span>
-              </div>
-              <button 
-                type="button"
-                onClick={() => setCurrentView('CAMERA')}
-                style={{
-                  fontSize: '11px',
-                  color: 'var(--color-primary)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontWeight: 600
-                }}
-              >
-                Coba Skenario Lain →
-              </button>
-            </div>
 
-            {/* Standard Graded Result Layout (Exact Mockup Match) */}
-            {resultData.statusCode === 'GRADED' && (
-              <>
-                {/* Official Stamp & System Confidence Score */}
-                <GradeStamp 
-                  grade={resultData.grade} 
-                  confidenceScore={resultData.confidenceScore} 
-                  status={resultData.statusCode} 
-                />
 
-                {/* Detected Material Details Card (Exact Mockup Match) */}
-                <div 
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderRadius: '16px',
-                    padding: '16px 20px',
-                    textAlign: 'center',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                    border: '1px solid rgba(216, 203, 176, 0.5)'
-                  }}
-                >
-                  <h3 style={{ fontSize: '15px', color: '#2A211A', fontWeight: 700, marginBottom: '2px' }}>
-                    {resultData.materialName}
-                  </h3>
-                  <p style={{ fontSize: '13px', color: '#7A6E5F' }}>
-                    {resultData.description}
-                  </p>
-                </div>
+              {/* Standard Graded Result Layout */}
+              {resultData.statusCode === 'GRADED' && (
+                <>
+                  <GradeStamp
+                    grade={resultData.grade}
+                    confidenceScore={resultData.confidenceScore}
+                    status={resultData.statusCode}
+                  />
 
-                {/* Buyer Recommendations Section (Exact Mockup Match) */}
-                <div style={{ marginTop: '8px' }}>
-                  <div style={{ marginBottom: '12px' }}>
-                    <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#2A211A', marginBottom: '2px' }}>
-                      Rekomendasi pembeli
-                    </h2>
-                    <p style={{ fontSize: '12px', color: '#7A6E5F' }}>
-                      Terurut dari yang terbaik untuk {selectedMaterial.toUpperCase()} Grade {resultData.grade}
+                  <div
+                    style={{
+                      backgroundColor: '#FFFFFF',
+                      borderRadius: '16px',
+                      padding: '16px 20px',
+                      textAlign: 'center',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                      border: '1px solid rgba(216, 203, 176, 0.5)'
+                    }}
+                  >
+                    <h3 style={{ fontSize: '15px', color: '#2A211A', fontWeight: 700, marginBottom: '2px' }}>
+                      {resultData.materialName}
+                    </h3>
+                    <p style={{ fontSize: '13px', color: '#7A6E5F' }}>
+                      {resultData.description}
                     </p>
                   </div>
 
-                  {/* Buyer Cards List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {resultData.buyers && resultData.buyers.map((buyer, index) => (
-                      <BuyerCard key={buyer.id} buyer={buyer} rank={index + 1} />
-                    ))}
+                  <div style={{ marginTop: '8px' }}>
+                    <div style={{ marginBottom: '12px' }}>
+                      <h2 style={{ fontSize: '16px', fontWeight: 700, color: '#2A211A', marginBottom: '2px' }}>
+                        Rekomendasi pembeli
+                      </h2>
+                      <p style={{ fontSize: '12px', color: '#7A6E5F' }}>
+                        Terurut dari yang terbaik untuk {selectedMaterial.toUpperCase()} Grade {resultData.grade}
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      {resultData.buyers && resultData.buyers.map((buyer, index) => (
+                        <BuyerCard key={buyer.id} buyer={buyer} rank={index + 1} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              </>
-            )}
+                </>
+              )}
 
-            {/* Exclusion Matrix Cards for Non-Graded Cases */}
-            {resultData.statusCode !== 'GRADED' && (
-              <ExclusionCard 
-                data={resultData}
-                onRetake={() => setCurrentView('CAMERA')}
-                onProceed={() => {
-                  setResultData((prev) => ({
-                    ...prev,
-                    statusCode: 'GRADED',
-                    buyers: prev.buyers || MOCK_GRADING_RESULTS.GRADED_A.buyers
-                  }));
-                }}
-              />
-            )}
+              {/* Exclusion Matrix Cards for Non-Graded Cases */}
+              {resultData.statusCode !== 'GRADED' && (
+                <ExclusionCard
+                  data={resultData}
+                  onRetake={() => setCurrentView('CAMERA')}
+                  onProceed={() => {
+                    setResultData((prev) => ({
+                      ...prev,
+                      statusCode: 'GRADED',
+                      buyers: prev.buyers || MOCK_GRADING_RESULTS.GRADED_A.buyers
+                    }));
+                  }}
+                />
+              )}
 
-          </div>
-        )}
+            </div>
+          )}
 
-        {/* Screen 3 Bottom Fixed Primary CTA Button (Exact Mockup Match: Foto Material Lagi) */}
-        {currentView === 'RESULT' && (
-          <div 
-            style={{
-              position: 'absolute',
-              bottom: '16px',
-              left: '16px',
-              right: '16px',
-              zIndex: 90
-            }}
-          >
-            <button 
-              type="button"
-              className="btn btn-primary"
-              onClick={() => setCurrentView('CAMERA')}
+          {/* Bottom Fixed CTA Button */}
+          {currentView === 'RESULT' && (
+            <div
               style={{
-                borderRadius: '14px',
-                minHeight: '48px',
-                fontSize: '15px',
-                fontWeight: 700,
-                backgroundColor: '#A8481F',
-                color: '#FFFFFF',
-                boxShadow: '0 4px 16px rgba(168, 72, 31, 0.35)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px'
+                position: 'absolute',
+                bottom: '16px',
+                left: '16px',
+                right: '16px',
+                zIndex: 90,
+                paddingBottom: 'env(safe-area-inset-bottom, 0px)'
               }}
             >
-              <Camera size={18} />
-              <span>Foto Material Lagi</span>
-            </button>
-          </div>
-        )}
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setCurrentView('CAMERA')}
+                style={{
+                  borderRadius: '14px',
+                  minHeight: '48px',
+                  fontSize: '15px',
+                  fontWeight: 700,
+                  backgroundColor: '#A8481F',
+                  color: '#FFFFFF',
+                  boxShadow: '0 4px 16px rgba(168, 72, 31, 0.35)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px'
+                }}
+              >
+                <Camera size={18} />
+                <span>Foto Material Lagi</span>
+              </button>
+            </div>
+          )}
 
-        {/* Past History Logs Drawer */}
-        <HistoryDrawer 
-          isOpen={isHistoryOpen}
-          onClose={() => setIsHistoryOpen(false)}
-          historyList={historyList}
-        />
+          {/* Past History Logs Drawer */}
+          <HistoryDrawer
+            isOpen={isHistoryOpen}
+            onClose={() => setIsHistoryOpen(false)}
+            historyList={historyList}
+          />
 
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -39,48 +39,67 @@
 }
 
 body {
-  background-color: #1a1714;
+  background-color: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  min-height: 100dvh;
 }
 
-/* App Outer Container & Phone Mockup Frame */
+/* App Outer Container — Mobile Only */
 .app-viewport-wrapper {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: #181512;
-  padding: 20px 0;
+  align-items: flex-start;
+  background-color: var(--color-bg);
+  padding: 0;
 }
 
 .app-frame {
   width: 100%;
-  max-width: 410px;
-  min-height: 840px;
-  height: 100%;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
   background-color: var(--color-bg);
-  border-radius: 36px;
-  border: 12px solid #000000;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
   position: relative;
-  overflow: hidden;
+  overflow: hidden auto;
   display: flex;
   flex-direction: column;
+  scrollbar-width: thin;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-.desktop-wide-view {
-  max-width: 860px !important;
-  border-radius: 20px !important;
-  border: 4px solid #332d27 !important;
+/* Desktop Blocker — block usage on screens wider than 640px */
+.desktop-blocker {
+  display: none;
+}
+
+@media (min-width: 641px) {
+  .desktop-blocker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: #12100E;
+    color: #FFFFFF;
+    padding: 40px 24px;
+    text-align: center;
+    font-family: var(--font-body);
+  }
+
+  .app-viewport-wrapper {
+    display: none;
+  }
 }
 
 /* Typography Utility Classes */
@@ -99,7 +118,7 @@ h1, h2, h3, h4 {
   font-family: var(--font-mono);
 }
 
-/* Buttons */
+/* Buttons & Interactive Elements */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -110,17 +129,22 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-button);
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   border: none;
   width: 100%;
   user-select: none;
 }
 
+.btn:active {
+  transform: scale(0.97);
+}
+
 .btn-primary {
   background-color: var(--color-primary);
   color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(168, 72, 31, 0.3);
 }
 
 .btn-primary:hover, .btn-primary:active {
@@ -133,6 +157,23 @@ h1, h2, h3, h4 {
   border: 2px solid var(--color-primary);
 }
 
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+}
+
+.glass-card-dark {
+  background: rgba(24, 21, 18, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+}
+
 /* Data Source Badges (Requirement 3.4) */
 .badge-data-asli {
   display: inline-flex;
@@ -142,7 +183,7 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-pill);
   background-color: rgba(76, 122, 61, 0.12);
   color: var(--color-grade-a);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
 }
 
@@ -154,16 +195,48 @@ h1, h2, h3, h4 {
   border-radius: var(--radius-pill);
   background-color: rgba(92, 79, 65, 0.12);
   color: var(--color-ink-soft);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.2s ease-out forwards;
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.18); opacity: 0.2; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pulse-glow-ring {
+  animation: pulseGlow 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Custom Scrollbars for mobile cleanliness */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(92, 79, 65, 0.25);
+  border-radius: 4px;
+}
+
