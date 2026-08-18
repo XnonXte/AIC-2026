@@ -85,6 +85,15 @@ body {
   }
 }
 
+/* Lock layout saat viewport height kurang dari 1000px - lock width & height ke 1000px */
+@media (max-height: 999px) {
+  .app-frame {
+    width: 1000px;
+    height: 1000px;
+    margin: 0 auto;
+  }
+}
+
 /* Responsive Design: Desktop vs Mobile */
 @media (max-width: 960px) {
   /* Mobile Layout - Default */
