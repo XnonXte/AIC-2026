@@ -63,6 +63,7 @@ body {
 
 .app-frame {
   width: 100%;
+  min-width: 320px;
   height: 100vh;
   height: 100dvh;
   max-height: 100dvh;
@@ -74,6 +75,14 @@ body {
   scrollbar-width: thin;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Lock layout pada ukuran sangat kecil - hanya untuk screen kecil */
+@media (max-width: 375px) {
+  .app-frame {
+    width: 375px;
+    margin: 0 auto;
+  }
 }
 
 /* Responsive Design: Desktop vs Mobile */
