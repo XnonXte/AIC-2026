@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 
-
+/**
+ * LoadingProgress Component (MOBILE)
+ * 3-stage loading progress for mobile devices
+ */
 export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
   const [currentStage, setCurrentStage] = useState(1);
 
@@ -40,7 +43,6 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
         overflowY: 'auto'
       }}
     >
-
       <div style={{ textAlign: 'center', marginBottom: '36px' }}>
         <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#FFFFFF', fontFamily: 'var(--font-display)', marginBottom: '4px' }}>
           Menilai material kamu
@@ -50,12 +52,11 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
         </p>
       </div>
 
-
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '20px',
+          gap: '12px',
           width: '100%',
           maxWidth: '280px'
         }}
@@ -130,7 +131,7 @@ export default function LoadingProgress({ onComplete, scenario = 'GRADED_A' }) {
         </div>
       </div>
 
-      {/* Bottom Demo Link (Exact Mockup Match: (demo → lihat state gagal/timeout)) */}
+      {/* Bottom Demo Link */}
       <div style={{ position: 'absolute', bottom: '20px', left: 0, right: 0, textAlign: 'center' }}>
         <button
           type="button"

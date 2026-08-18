@@ -76,29 +76,39 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Desktop Blocker — block usage on screens wider than 640px */
-.desktop-blocker {
-  display: none;
-}
-
-@media (min-width: 641px) {
-  .desktop-blocker {
+/* Responsive Design: Desktop vs Mobile */
+@media (max-width: 960px) {
+  /* Mobile Layout - Default */
+  .app-viewport-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background-color: #12100E;
-    color: #FFFFFF;
-    padding: 40px 24px;
-    text-align: center;
-    font-family: var(--font-body);
   }
 
+  .desktop-layout {
+    display: none;
+  }
+}
+
+@media (min-width: 961px) {
+  /* Desktop Layout */
   .app-viewport-wrapper {
     display: none;
+  }
+
+  .desktop-layout {
+    display: flex;
+  }
+}
+
+/* Desktop Sidebar Responsive */
+@media (max-width: 1200px) {
+  .desktop-sidebar {
+    width: 280px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .desktop-sidebar {
+    width: 240px !important;
   }
 }
 

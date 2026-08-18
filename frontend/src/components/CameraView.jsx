@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, X, Upload, RefreshCw, SwitchCamera, Sparkles, Check } from 'lucide-react';
+import { Camera, X, Upload, RefreshCw, SwitchCamera, Sparkles, Check, FlaskConical, Package, Container, Lightbulb } from 'lucide-react';
 import { MATERIALS } from '../data/mockData';
 
 /**
@@ -13,10 +13,10 @@ import { MATERIALS } from '../data/mockData';
 export default function CameraView({ onCapture, selectedMaterial, setSelectedMaterial, scenario, setScenario }) {
   const [showLightingTip, setShowLightingTip] = useState(true);
   const [previewImage, setPreviewImage] = useState(null);
-  const [showDemoPanel, setShowDemoPanel] = useState(false);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState(null);
   const videoRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   // Start live webcam stream if supported
   const startCamera = async () => {
@@ -139,9 +139,13 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
                 outline: 'none'
               }}
             >
-              <span style={{ fontSize: '20px', lineHeight: 1 }}>
-                {item.id === 'pet' ? '🍾' : item.id === 'kardus' ? '📦' : '🥫'}
-              </span>
+              {item.id === 'pet' ? (
+                <FlaskConical size={20} color="#FFFFFF" />
+              ) : item.id === 'kardus' ? (
+                <Package size={20} color="#FFFFFF" />
+              ) : (
+                <Container size={20} color="#FFFFFF" />
+              )}
               <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                 <span>{item.name}</span>
                 {isActive && <Check size={11} color="var(--color-accent-gold)" strokeWidth={3} />}
@@ -192,7 +196,7 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
 
         {/* Viewfinder Overlay Placeholder when no camera & no preview */}
         {!isCameraActive && !previewImage && (
-          <div style={{ textAlign: 'center', padding: '24px', color: 'rgba(255, 255, 255, 0.6)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', color: 'rgba(255, 255, 255, 0.6)', height: '100%' }}>
             <div
               style={{
                 width: '64px',
@@ -211,26 +215,39 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
               Arahkan kamera ke material {selectedMaterial.toUpperCase()}
             </p>
 
-            <label
+            <button
+              onClick={() => fileInputRef.current?.click()}
               style={{
-                fontSize: '12px',
-                fontWeight: 600,
-                color: 'var(--color-accent-gold)',
-                backgroundColor: 'rgba(200, 146, 56, 0.15)',
-                border: '1px solid rgba(200, 146, 56, 0.3)',
-                padding: '8px 14px',
-                borderRadius: '9999px',
+                padding: '10px 16px',
+                backgroundColor: '#d97706',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: '8px',
                 cursor: 'pointer',
-                display: 'inline-flex',
+                fontSize: '13px',
+                fontWeight: 600,
+                transition: 'all 0.2s ease',
+                display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                transition: 'all 0.15s ease'
+                gap: '6px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#b45309';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#d97706';
               }}
             >
               <Upload size={14} />
-              <span>Pilih foto dari Galeri</span>
-              <input type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
-            </label>
+              <span>Upload</span>
+            </button>
+            <input 
+              ref={fileInputRef}
+              type="file" 
+              accept="image/*" 
+              onChange={handleFileUpload} 
+              style={{ display: 'none' }} 
+            />
 
             {cameraError && (
               <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '8px' }}>
@@ -271,8 +288,8 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
             }}
           >
             <div>
-              <p style={{ fontWeight: 600, color: 'var(--color-accent-gold)' }}>💡 Tips Foto Presisi:</p>
-              <p style={{ opacity: 0.88 }}>Pastikan terang & sebar material (max 2 lapis).</p>
+              <p style={{ fontWeight: 600, color: '#D1D5DB', fontSize: '14px', margin: '0 0 8px 0' }}>Pastikan pencahayaan cukup terang.</p>
+              <p style={{ fontWeight: 500, color: '#D1D5DB', fontSize: '14px', margin: 0 }}>Sebarkan material, jangan menumpuk &gt; 2 lapis.</p>
             </div>
             <button
               type="button"
@@ -331,114 +348,15 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
           />
         </div>
 
-        {/* Demo Scenario Switcher Button */}
-        <button
-          type="button"
-          onClick={() => setShowDemoPanel(!showDemoPanel)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'rgba(255, 255, 255, 0.65)',
-            fontSize: '11px',
-            textDecoration: 'underline',
-            cursor: 'pointer',
-            padding: '4px'
-          }}
-        >
-          {showDemoPanel ? '▲ Sembunyikan Panel Demo' : '▼ (demo skenario pengujian AI)'}
-        </button>
-
-        {/* Quick Demo Switcher Drawer */}
-        {showDemoPanel && (
-          <div
-            className="animate-fade-in"
-            style={{
-              width: '100%',
-              backgroundColor: 'rgba(255, 255, 255, 0.08)',
-              borderRadius: '14px',
-              padding: '12px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '8px',
-              marginTop: '2px',
-              border: '1px solid rgba(255, 255, 255, 0.12)'
-            }}
-          >
-            <span style={{ fontSize: '11px', color: 'var(--color-accent-gold)', fontWeight: 600, letterSpacing: '0.4px' }}>
-              PILIH SKENARIO AI MOCKUP:
-            </span>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
-              <button
-                type="button"
-                onClick={() => setScenario('GRADED_A')}
-                style={{
-                  padding: '7px 8px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  backgroundColor: scenario === 'GRADED_A' ? 'var(--color-grade-a)' : 'rgba(255,255,255,0.1)',
-                  color: '#FFF',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  textAlign: 'left'
-                }}
-              >
-                ✓ Grade A (PET Bening)
-              </button>
-              <button
-                type="button"
-                onClick={() => setScenario('GRADED_B')}
-                style={{
-                  padding: '7px 8px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  backgroundColor: scenario === 'GRADED_B' ? 'var(--color-grade-b)' : 'rgba(255,255,255,0.1)',
-                  color: '#FFF',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  textAlign: 'left'
-                }}
-              >
-                ✓ Grade B (Berlabel)
-              </button>
-              <button
-                type="button"
-                onClick={() => setScenario('EXCLUSION_TOLAK_FOTO')}
-                style={{
-                  padding: '7px 8px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  backgroundColor: scenario === 'EXCLUSION_TOLAK_FOTO' ? 'var(--color-grade-c)' : 'rgba(255,255,255,0.1)',
-                  color: '#FFF',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  textAlign: 'left'
-                }}
-              >
-                ✕ Tolak Foto (Gelap)
-              </button>
-              <button
-                type="button"
-                onClick={() => setScenario('EXCLUSION_WARNING')}
-                style={{
-                  padding: '7px 8px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  backgroundColor: scenario === 'EXCLUSION_WARNING' ? 'var(--color-info)' : 'rgba(255,255,255,0.1)',
-                  color: '#FFF',
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  textAlign: 'left'
-                }}
-              >
-                ⚠ Lolos Peringatan
-              </button>
-            </div>
-          </div>
-        )}
+        {/* Demo Text Display */}
+        <p style={{
+          fontSize: '12px',
+          color: '#6B7280',
+          marginTop: '12px',
+          margin: '12px 0 0 0'
+        }}>
+          (demo → klik untuk lanjut)
+        </p>
       </div>
     </div>
   );

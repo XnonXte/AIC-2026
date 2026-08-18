@@ -1,22 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import CameraView from './components/CameraView';
+import DesktopCameraView from './components/DesktopCameraView';
 import LoadingProgress from './components/LoadingProgress';
+import DesktopLoadingProgress from './components/DesktopLoadingProgress';
 import GradeStamp from './components/GradeStamp';
 import ExclusionCard from './components/ExclusionCard';
 import BuyerCard from './components/BuyerCard';
 import HistoryDrawer from './components/HistoryDrawer';
+import DesktopLayout from './components/DesktopLayout';
+import DesktopResultsPanel from './components/DesktopResultsPanel';
+import DesktopHistoryView from './components/DesktopHistoryView';
 import { MOCK_GRADING_RESULTS, INITIAL_HISTORY } from './data/mockData';
 import { Camera, Sliders, Smartphone } from 'lucide-react';
 
 export default function App() {
+  // Device Detection
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 960);
+  
   // Navigation & View States
-  const [currentView, setCurrentView] = useState('CAMERA'); // 'CAMERA' | 'LOADING' | 'RESULT'
+  const [currentView, setCurrentView] = useState('CAMERA'); // 'CAMERA' | 'LOADING' | 'RESULT' | 'HISTORY'
   const [selectedMaterial, setSelectedMaterial] = useState('pet');
   const [scenario, setScenario] = useState('GRADED_A');
   const [resultData, setResultData] = useState(MOCK_GRADING_RESULTS.GRADED_A);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [historyList, setHistoryList] = useState(INITIAL_HISTORY);
+
+  // Handle window resize for responsive design
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth > 960);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Trigger Capture & Start 3-Stage Progress
   const handleCapture = (targetScenario = scenario) => {
@@ -44,59 +61,69 @@ export default function App() {
     }
   };
 
+  // Desktop view for screens > 960px width
+  if (isDesktop) {
+    return (
+      <DesktopLayout
+        currentView={currentView}
+        onViewChange={setCurrentView}
+        historyCount={historyList.length}
+        onOpenHistory={() => setCurrentView('HISTORY')}
+      >
+        {/* Desktop Camera View */}
+        {currentView === 'CAMERA' && (
+          <DesktopCameraView
+            onCapture={handleCapture}
+            selectedMaterial={selectedMaterial}
+            setSelectedMaterial={setSelectedMaterial}
+            scenario={scenario}
+            setScenario={setScenario}
+          />
+        )}
+
+        {/* Desktop Loading Progress */}
+        {currentView === 'LOADING' && (
+          <DesktopLoadingProgress
+            scenario={scenario}
+            onComplete={handleLoadingComplete}
+          />
+        )}
+
+        {/* Desktop Results Panel */}
+        {currentView === 'RESULT' && (
+          <DesktopResultsPanel
+            resultData={resultData}
+            selectedMaterial={selectedMaterial}
+            onRetake={() => setCurrentView('CAMERA')}
+            onProceed={() => {
+              if (resultData.statusCode !== 'GRADED') {
+                setResultData((prev) => ({
+                  ...prev,
+                  statusCode: 'GRADED',
+                  buyers: prev.buyers || MOCK_GRADING_RESULTS.GRADED_A.buyers
+                }));
+              }
+            }}
+          />
+        )}
+
+        {/* Desktop History View */}
+        {currentView === 'HISTORY' && (
+          <DesktopHistoryView
+            historyList={historyList}
+            onBack={() => setCurrentView('CAMERA')}
+          />
+        )}
+      </DesktopLayout>
+    );
+  }
+
+  // Mobile view for screens <= 960px width
   return (
     <>
-      {/* Desktop Blocker — shown only on screens > 640px */}
-      <div className="desktop-blocker">
-        <div
-          style={{
-            width: '80px',
-            height: '80px',
-            borderRadius: '50%',
-            backgroundColor: 'rgba(168, 72, 31, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '24px'
-          }}
-        >
-          <Smartphone size={36} color="#A8481F" />
-        </div>
-        <h2
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '22px',
-            fontWeight: 700,
-            color: '#FFFFFF',
-            marginBottom: '12px'
-          }}
-        >
-          Aplikasi Khusus Mobile
-        </h2>
-        <p
-          style={{
-            fontSize: '15px',
-            color: 'rgba(255, 255, 255, 0.65)',
-            maxWidth: '360px',
-            lineHeight: 1.6
-          }}
-        >
-          DaurAI Intelligence dirancang khusus untuk perangkat mobile.
-          Silakan buka di HP kamu untuk pengalaman terbaik.
-        </p>
-
-      </div>
-
-      {/* Mobile App — hidden on desktop via CSS */}
+      {/* Mobile App */}
       <div className="app-viewport-wrapper">
-        <div className="app-frame">
-
-          {/* Header Bar only for Result Screen */}
-          {currentView === 'RESULT' && (
-            <Header
-              onOpenHistory={() => setIsHistoryOpen(true)}
-            />
-          )}
+      <div className="app-frame">
 
           {/* Screen 1: Camera Capture View */}
           {currentView === 'CAMERA' && (
@@ -233,14 +260,14 @@ export default function App() {
             </div>
           )}
 
-          {/* Past History Logs Drawer */}
-          <HistoryDrawer
-            isOpen={isHistoryOpen}
-            onClose={() => setIsHistoryOpen(false)}
-            historyList={historyList}
-          />
+        {/* Past History Logs Drawer */}
+        <HistoryDrawer
+          isOpen={isHistoryOpen}
+          onClose={() => setIsHistoryOpen(false)}
+          historyList={historyList}
+        />
 
-        </div>
+      </div>
       </div>
     </>
   );

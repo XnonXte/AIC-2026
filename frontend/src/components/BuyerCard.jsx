@@ -112,14 +112,14 @@ export default function BuyerCard({ buyer, rank = 1 }) {
         <div style={{ textAlign: 'right', whiteSpace: 'nowrap', flexShrink: 0, minWidth: '90px' }}>
           <div
             style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '16px',
+              fontSize: '24px',
               fontWeight: 700,
               color: '#C89238'
             }}
           >
-            Rp {formattedPrice}<span style={{ fontSize: '11px', fontWeight: 400, color: '#5C4F41' }}>/kg</span>
+            Rp {formattedPrice}
           </div>
+          <span style={{ fontSize: '13px', fontWeight: 400, color: '#5C4F41' }}>/kg</span>
         </div>
       </div>
 
