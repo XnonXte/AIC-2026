@@ -11,8 +11,11 @@ import HistoryDrawer from './components/HistoryDrawer';
 import DesktopLayout from './components/DesktopLayout';
 import DesktopResultsPanel from './components/DesktopResultsPanel';
 import DesktopHistoryView from './components/DesktopHistoryView';
+import DetectionResults from './components/DetectionResults';
 import { MOCK_GRADING_RESULTS, INITIAL_HISTORY } from './data/mockData';
-import { Camera, Sliders, Smartphone } from 'lucide-react';
+import { Camera } from 'lucide-react';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:7860';
 
 export default function App() {
   // Device Detection
@@ -22,7 +25,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState('CAMERA'); // 'CAMERA' | 'LOADING' | 'RESULT' | 'HISTORY'
   const [selectedMaterial, setSelectedMaterial] = useState('pet');
   const [scenario, setScenario] = useState('GRADED_A');
-  const [resultData, setResultData] = useState(MOCK_GRADING_RESULTS.GRADED_A);
+  const [resultData, setResultData] = useState(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [historyList, setHistoryList] = useState(INITIAL_HISTORY);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
@@ -37,33 +40,76 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  if (!isDesktop && currentView === 'RESULT' && resultData?.detections) {
+    return (
+      <div className="app-viewport-wrapper">
+        <div className="app-frame detection-results-frame">
+          <DetectionResults
+            resultData={resultData}
+            capturedPhoto={capturedPhoto}
+            onRetake={() => setCurrentView('CAMERA')}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (!isDesktop && currentView === 'RESULT' && resultData?.error) {
+    return (
+      <div className="app-viewport-wrapper">
+        <div className="app-frame detection-results-frame">
+          <div className="detection-error">
+            <h2>Prediksi gagal</h2>
+            <p>{resultData.error}</p>
+            <button className="btn btn-primary" onClick={() => setCurrentView('CAMERA')}>Coba lagi</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Trigger Capture & Start 3-Stage Progress
-  const handleCapture = (targetScenario = scenario, photo = null) => {
-    const data = MOCK_GRADING_RESULTS[targetScenario] || MOCK_GRADING_RESULTS.GRADED_A;
-    setResultData(data);
-    setCapturedPhoto(photo);
+  const handleCapture = async (photo = null) => {
+    if (!photo) return;
+    setCapturedPhoto(photo.preview);
     setActiveItemIndex(0); // Reset to first item
     setCurrentView('LOADING');
+
+    try {
+      const formData = new FormData();
+      formData.append('image', photo.file, photo.file.name || 'material.jpg');
+      const model = selectedMaterial === 'kaleng' ? 'can' : selectedMaterial === 'kardus' ? 'cardboard' : 'pet';
+      formData.append('model', model);
+
+      const response = await fetch(`${API_URL}/predict`, { method: 'POST', body: formData });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.detail || 'Prediksi gagal.');
+      setResultData(payload);
+      setCurrentView('RESULT');
+    } catch (error) {
+      setResultData({ error: error.message });
+      setCurrentView('RESULT');
+    }
   };
 
   // Complete Loading Transition
   const handleLoadingComplete = () => {
-    setCurrentView('RESULT');
+    if (!resultData || resultData.error) return;
 
-    if (resultData.statusCode === 'GRADED' || resultData.statusCode === 'LOLOS_DENGAN_PERINGATAN' || resultData.statusCode === 'DOWNGRADE_PAKSA') {
+    if (resultData.object_count > 0) {
       // For multiple items, record each item separately or the primary one
-      const items = resultData.items || [resultData];
+      const items = resultData.detections || [];
       const primaryItem = items[0];
       
       const newEntry = {
         id: `h-${Date.now()}`,
         date: 'Baru saja',
-        material: primaryItem.materialName || selectedMaterial.toUpperCase(),
-        grade: primaryItem.grade || 'B',
-        confidence: primaryItem.confidenceScore || 80,
-        bestPrice: primaryItem.buyers ? primaryItem.buyers[0].pricePerKg : 4200,
-        buyerName: primaryItem.buyers ? primaryItem.buyers[0].name : 'CV Bersih Jaya',
-        status: resultData.statusCode,
+        material: primaryItem.class,
+        grade: '-',
+        confidence: Math.round(primaryItem.confidence * 100),
+        bestPrice: 0,
+        buyerName: 'Deteksi YOLO',
+        status: 'DETECTED',
         itemCount: items.length > 1 ? items.length : undefined
       };
       setHistoryList((prev) => [newEntry, ...prev]);
@@ -93,7 +139,6 @@ export default function App() {
         {/* Desktop Loading Progress */}
         {currentView === 'LOADING' && (
           <DesktopLoadingProgress
-            scenario={scenario}
             onComplete={handleLoadingComplete}
           />
         )}
@@ -105,15 +150,7 @@ export default function App() {
             selectedMaterial={selectedMaterial}
             capturedPhoto={capturedPhoto}
             onRetake={() => setCurrentView('CAMERA')}
-            onProceed={() => {
-              if (resultData.statusCode !== 'GRADED') {
-                setResultData((prev) => ({
-                  ...prev,
-                  statusCode: 'GRADED',
-                  buyers: prev.buyers || MOCK_GRADING_RESULTS.GRADED_A.buyers
-                }));
-              }
-            }}
+            onProceed={() => setCurrentView('CAMERA')}
           />
         )}
 

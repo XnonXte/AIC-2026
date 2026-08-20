@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AlertCircle, CheckCircle, XCircle, Phone, MapPin, Star, Camera, ChevronLeft, ChevronRight } from 'lucide-react';
+import DetectionResults from './DetectionResults';
 
 /**
  * DesktopResultsPanel Component
@@ -26,6 +27,10 @@ export default function DesktopResultsPanel({
         <p>Tidak ada hasil untuk ditampilkan</p>
       </div>
     );
+  }
+
+  if (resultData.detections) {
+    return <DetectionResults resultData={resultData} capturedPhoto={capturedPhoto} onRetake={onRetake} />;
   }
 
   // Check if multiple items

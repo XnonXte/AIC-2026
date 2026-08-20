@@ -13,6 +13,7 @@ import { MATERIALS } from '../data/mockData';
 export default function CameraView({ onCapture, selectedMaterial, setSelectedMaterial, scenario, setScenario }) {
   const [showLightingTip, setShowLightingTip] = useState(true);
   const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState(null);
   const videoRef = useRef(null);
@@ -50,13 +51,24 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (event) => {
-        setPreviewImage(event.target.result);
+        const preview = event.target.result;
+        setPreviewImage(preview);
         setIsCameraActive(false);
+        onCapture({ file, preview });
       };
       reader.readAsDataURL(file);
+      e.target.value = '';
     }
+  };
+
+  const submitCapture = async () => {
+    const preview = captureFromCamera();
+    if (!preview) return;
+    const file = selectedFile || new File([await (await fetch(preview)).blob()], 'camera-capture.jpg', { type: 'image/jpeg' });
+    onCapture({ file, preview });
   };
 
   // Capture from video stream
@@ -229,40 +241,6 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
               Arahkan kamera ke material {selectedMaterial.toUpperCase()}
             </p>
 
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              style={{
-                padding: '10px 16px',
-                backgroundColor: '#d97706',
-                color: '#FFFFFF',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '13px',
-                fontWeight: 600,
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#b45309';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#d97706';
-              }}
-            >
-              <Upload size={14} />
-              <span>Upload</span>
-            </button>
-            <input 
-              ref={fileInputRef}
-              type="file" 
-              accept="image/*" 
-              onChange={handleFileUpload} 
-              style={{ display: 'none' }} 
-            />
-
             {cameraError && (
               <p style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '8px' }}>
                 {cameraError}
@@ -316,6 +294,30 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
         )}
       </div>
 
+      <div style={{ padding: '14px 16px 0', display: 'flex', justifyContent: 'center' }}>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          style={{
+            padding: '10px 16px',
+            backgroundColor: '#d97706',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '13px',
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+        >
+          <Upload size={14} />
+          <span>Upload foto</span>
+        </button>
+        <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
+      </div>
+
       {/* Bottom Controls: Shutter Button & Demo Mode Switcher */}
       <div
         style={{
@@ -341,7 +343,7 @@ export default function CameraView({ onCapture, selectedMaterial, setSelectedMat
           />
           <button
             type="button"
-            onClick={() => onCapture(scenario, captureFromCamera())}
+            onClick={submitCapture}
             style={{
               width: '66px',
               height: '66px',

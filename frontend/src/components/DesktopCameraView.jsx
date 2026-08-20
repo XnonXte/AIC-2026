@@ -14,6 +14,7 @@ export default function DesktopCameraView({
   setScenario
 }) {
   const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState(null);
   const [dragActive, setDragActive] = useState(false);
@@ -53,13 +54,23 @@ export default function DesktopCameraView({
 
   const handleFileUpload = (file) => {
     if (file && file.type.startsWith('image/')) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (event) => {
-        setPreviewImage(event.target.result);
+        const preview = event.target.result;
+        setPreviewImage(preview);
         setIsCameraActive(false);
+        onCapture({ file, preview });
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const submitCapture = async () => {
+    const preview = captureFromCamera();
+    if (!preview) return;
+    const file = selectedFile || new File([await (await fetch(preview)).blob()], 'camera-capture.jpg', { type: 'image/jpeg' });
+    onCapture({ file, preview });
   };
 
   // Capture from video stream
@@ -221,77 +232,13 @@ export default function DesktopCameraView({
         {!isCameraActive && !previewImage && (
           <div style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
+            inset: 0,
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            gap: '20px',
-            padding: '24px',
-            width: '100%',
-            height: '100%',
-            textAlign: 'left',
-            position: 'relative'
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px'
           }}>
-            <div style={{
-              borderLeft: '4px solid #d97706',
-              paddingLeft: '16px'
-            }}>
-              <p style={{
-                fontSize: '14px',
-                fontWeight: 600,
-                color: '#D1D5DB',
-                margin: '0 0 8px 0'
-              }}>
-                Pastikan pencahayaan cukup terang.
-              </p>
-              <p style={{
-                fontSize: '14px',
-                fontWeight: 500,
-                color: '#D1D5DB',
-                margin: 0
-              }}>
-                Sebarkan material, jangan menumpuk &gt; 2 lapis.
-              </p>
-            </div>
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                padding: '10px 16px',
-                backgroundColor: '#d97706',
-                color: '#FFFFFF',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '13px',
-                fontWeight: 600,
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#b45309';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#d97706';
-              }}
-            >
-              <Upload size={14} />
-              Upload
-            </button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
-              style={{ display: 'none' }}
-            />
+            <Camera size={42} color="rgba(255, 255, 255, 0.35)" />
           </div>
         )}
 
@@ -327,6 +274,48 @@ export default function DesktopCameraView({
         )}
       </div>
 
+      <div style={{ marginTop: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+        <div style={{
+          color: '#D1D5DB',
+          width: 'min(100%, 520px)',
+          textAlign: 'center'
+        }}>
+          <p style={{ fontSize: '14px', fontWeight: 600, margin: '0 0 8px 0' }}>
+            Pastikan pencahayaan cukup terang.
+          </p>
+          <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>
+            Sebarkan material, jangan menumpuk &gt; 2 lapis.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          style={{
+            padding: '10px 18px',
+            backgroundColor: '#d97706',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '13px',
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+        >
+          <Upload size={14} />
+          Upload foto
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
+          style={{ display: 'none' }}
+        />
+      </div>
+
       {/* Shutter Button */}
       <div style={{
         marginTop: '40px',
@@ -348,7 +337,7 @@ export default function DesktopCameraView({
             }}
           />
           <button
-            onClick={() => onCapture(scenario, captureFromCamera())}
+            onClick={submitCapture}
             style={{
               width: '66px',
               height: '66px',

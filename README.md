@@ -1,6 +1,8 @@
 # Trash Classification YOLO App
 
-This project contains a FastAPI backend and a Vite + React frontend for uploading images, selecting a YOLO model, and receiving classified detection results.
+This is a local prototype consisting of a FastAPI backend and a Vite + React frontend. Users can upload or capture an image, select a waste material model, and view YOLO detection results with bounding boxes.
+
+The instructions below are intended for prototype development only. They do not cover production deployment, authentication, persistent storage, or hosted model serving.
 
 ## Project structure
 
@@ -24,7 +26,12 @@ AIC-2026/
 
 ## Backend setup
 
-From the repository root:
+Requirements:
+
+- Python 3.10 or newer
+- The model files in `models/`
+
+From the repository root, create and activate a virtual environment:
 
 ```bash
 python -m venv .venv
@@ -55,6 +62,8 @@ The backend exposes these model names:
 
 ## Start the backend server
 
+Keep the virtual environment activated and run from the repository root. The prototype backend runs at `http://localhost:7860`.
+
 From the repository root:
 
 ```bash
@@ -75,11 +84,22 @@ http://localhost:7860/docs
 
 ## Frontend setup
 
+Requirements:
+
+- Node.js 18 or newer
+- npm
+
 Install the frontend dependencies:
 
 ```bash
 cd frontend
 npm install
+```
+
+The frontend uses `http://localhost:7860` as the default backend URL. To use another local backend URL, create `frontend/.env.local`:
+
+```env
+VITE_API_URL=http://localhost:7860
 ```
 
 ## Start the frontend server
@@ -95,7 +115,7 @@ The frontend will typically run at:
 http://localhost:5173
 ```
 
-## Run both together
+## Run the prototype
 
 Open two terminals:
 
@@ -112,7 +132,7 @@ cd frontend
 npm run dev -- --host 0.0.0.0
 ```
 
-Then open the frontend URL in the browser and use the backend API at `http://localhost:7860`.
+Open the frontend URL in the browser, normally `http://localhost:5173`. The frontend sends prediction requests to `http://localhost:7860`.
 
 ## Example prediction request
 
@@ -147,20 +167,13 @@ curl -X POST "http://localhost:7860/predict" \
 }
 ```
 
-## Production build
+## Optional Prototype Checks
 
-To build the frontend for deployment:
+To verify that the frontend can be built locally:
 
 ```bash
 cd frontend
 npm run build
-```
-
-Then preview it locally:
-
-```bash
-cd frontend
-npm run preview -- --host 0.0.0.0
 ```
 
 ## Notes
